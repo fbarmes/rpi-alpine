@@ -4,7 +4,7 @@
 # Docker variables
 #-------------------------------------------------------------------------------
 DOCKER_IMAGE_NAME=fbarmes/rpi-alpine
-DOCKER_IMAGE_VERSION=0.0.1-SNAPSHOT
+DOCKER_IMAGE_VERSION=$(shell cat VERSION)
 
 ALPINE_VERSION=3.8
 QEMU_VERSION=3.0.0
