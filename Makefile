@@ -4,7 +4,7 @@
 # Docker variables
 #-------------------------------------------------------------------------------
 DOCKER_IMAGE_NAME=fbarmes/rpi-alpine
-DOCKER_IMAGE_VERSION=0.1
+DOCKER_IMAGE_VERSION=0.0.1-SNAPSHOT
 
 ALPINE_VERSION=3.8
 QEMU_VERSION=3.0.0
@@ -76,4 +76,4 @@ docker:
 # test image
 #-------------------------------------------------------------------------------
 test:
-	docker run ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} uname -a
+	docker run --rm ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} uname -a
