@@ -23,7 +23,7 @@ QEMU_URL=https://github.com/multiarch/qemu-user-static/releases/download/v${QEMU
 # Default target (all)
 #-------------------------------------------------------------------------------
 .PHONY: all
-all: echo qemu docker test
+all: echo deps docker test
 
 #-------------------------------------------------------------------------------
 # clean target
@@ -43,10 +43,13 @@ echo:
 	@echo "SCRIPT_DIR=${SCRIPT_DIR}"
 
 #-------------------------------------------------------------------------------
+# Gather dependencies
+#-------------------------------------------------------------------------------
+deps: bin/qemu-arm-static
+
+#-------------------------------------------------------------------------------
 # Build qemu
 #-------------------------------------------------------------------------------
-qemu: bin/qemu-arm-static
-
 bin/qemu-arm-static:
 	#-- build qemu binary
 	mkdir -p ${SCRIPT_DIR}/bin
