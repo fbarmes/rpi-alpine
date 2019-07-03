@@ -1,0 +1,17 @@
+sudo: required
+
+
+
+services:
+  - docker
+
+
+install:
+  # install any dependencies required
+  true
+
+script:
+  # run the build script
+  - make
+
+after_success:
