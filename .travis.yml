@@ -18,12 +18,23 @@ services:
 #-- Dependencies
 install:
   # install any dependencies required
-  skip
+  make deps
+  
 
-#-- Build script
-script:
-  # run the build script
-  - make
-  - make test
 
-after_success:
+jobs:
+  include:
+    - stage: build
+      script: make docker-build
+
+    - stage: deploy
+      scrot: echo "this is the deploy stages"
+
+
+# #-- Build script
+# script:
+#   # run the build script
+#   - make
+#   - make test
+#
+# after_success:
