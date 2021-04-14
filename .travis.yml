@@ -20,21 +20,36 @@ install:
   # install any dependencies required
   skip
 
+
+#--
+script:
+  - make docker-build
+
+#--
+after_success:
+  - if [[ "$TRAVIS_BRANCH" == "master" ]]; then
+      echo "branch is ${TRAVIS_BRANCH} : push image"
+      make docker-push docker-push-latest;
+    else
+      echo "branch is ${TRAVIS_BRANCH} : skip pushing image"
+    fi
+
+
 #-- Define stage order and conditions
-stages:
-  - name: build
-  - name: deploy
-    if: branch = master
-
-#-- define jobs and stages
-jobs:
-  include:
-    - stage: build
-      script: make docker-build
-
-    - stage: deploy
-      script:
-        - echo "Push to docker hub"
-        - make docker-build
-        - make docker-push
-        - make docker-push-latest
+# stages:
+#   - name: build
+#   - name: deploy
+#     if: branch = master
+#
+# #-- define jobs and stages
+# jobs:
+#   include:
+#     - stage: build
+#       script: make docker-build
+#
+#     - stage: deploy
+#       script:
+#         - echo "Push to docker hub"
+#         - make docker-build
+#         - make docker-push
+#         - make docker-push-latest
