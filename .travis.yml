@@ -1,4 +1,3 @@
-
 #-- Choose build environment
 virt: lxd               # LXD container
 os: linux
@@ -6,16 +5,25 @@ dist: focal             # Use Ubuntu 20
 language: shell
 
 
+#-- Choose which branches are built
+branches:
+  only:
+    - master
+    - develop
+
+#-- Enable support services
 services:
   - docker
 
-
+#-- Dependencies
 install:
   # install any dependencies required
-  true
+  skip
 
+#-- Build script
 script:
   # run the build script
   - make
+  - make test
 
 after_success:
