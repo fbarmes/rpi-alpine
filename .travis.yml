@@ -19,16 +19,17 @@ services:
 install:
   # install any dependencies required
   make deps
-  
+
 
 
 jobs:
   include:
     - stage: build
+      install: make deps
       script: make docker-build
 
     - stage: deploy
-      scrot: echo "this is the deploy stages"
+      script: echo "this is the deploy stages"
 
 
 # #-- Build script
