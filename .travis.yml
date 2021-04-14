@@ -21,6 +21,11 @@ install:
   make deps
 
 
+stages:
+  - name: build
+  - name: deploy
+    if: branch = master
+
 
 jobs:
   include:
