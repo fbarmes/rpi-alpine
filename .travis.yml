@@ -35,5 +35,6 @@ jobs:
     - stage: deploy
       script:
         - echo "Push to docker hub"
+        - make docker-build
         - make docker-push
         - make docker-push-latest
