@@ -71,7 +71,8 @@ docker-build: deps
 	  --file Dockerfile \
 	  ${SCRIPT_DIR}
 
-
+	#-- tag image as latest
+	docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} ${DOCKER_IMAGE_NAME}:latest
 
 #-------------------------------------------------------------------------------
 # test image
@@ -89,6 +90,4 @@ docker-push: docker-login
 		docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}
 
 docker-push-latest: docker-login
-		#-- tag image as latest
-		docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} ${DOCKER_IMAGE_NAME}:latest
-		docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}
+		docker push ${DOCKER_IMAGE_NAME}:latest

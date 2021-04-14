@@ -20,13 +20,13 @@ install:
   # install any dependencies required
   skip
 
-
+#-- Define stage order and conditions
 stages:
   - name: build
   - name: deploy
     if: branch = master
 
-
+#-- define jobs and stages
 jobs:
   include:
     - stage: build
