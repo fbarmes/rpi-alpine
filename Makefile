@@ -60,7 +60,7 @@ bin/qemu-arm-static:
 #-------------------------------------------------------------------------------
 # Build docker image
 #-------------------------------------------------------------------------------
-docker-build:
+docker-build: deps
 	#-- register cpu emulation
 	docker run --rm --privileged multiarch/qemu-user-static:register --reset
 
@@ -71,8 +71,6 @@ docker-build:
 	  --file Dockerfile \
 	  ${SCRIPT_DIR}
 
-	#-- tag image as latest
-	docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} ${DOCKER_IMAGE_NAME}:latest
 
 
 #-------------------------------------------------------------------------------
@@ -84,6 +82,13 @@ test:
 #-------------------------------------------------------------------------------
 # push docker image
 #-------------------------------------------------------------------------------
-docker-push: docker-build
+docker-login:
 		docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)
+
+docker-push: docker-login
+		docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}
+
+docker-push-latest: docker-login
+		#-- tag image as latest
+		docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} ${DOCKER_IMAGE_NAME}:latest
 		docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}
