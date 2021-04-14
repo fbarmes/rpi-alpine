@@ -1,17 +1,39 @@
-sudo: required
+#-- Choose build environment
+virt: lxd               # LXD container
+os: linux
+dist: focal             # Use Ubuntu 20
+language: shell
 
 
+#-- Choose which branches are built
+branches:
+  only:
+    - master
+    - develop
 
+#-- Enable support services
 services:
   - docker
 
-
+#-- Dependencies
 install:
   # install any dependencies required
-  true
+  skip
 
-script:
-  # run the build script
-  - make
+#-- Define stage order and conditions
+stages:
+  - name: build
+  - name: deploy
+    if: branch = master
 
-after_success:
+#-- define jobs and stages
+jobs:
+  include:
+    - stage: build
+      script: make docker-build
+
+    - stage: deploy
+      script:
+        - echo "Push to docker hub"
+        - make docker-push
+        - make docker-push-latest
