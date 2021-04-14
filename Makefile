@@ -6,8 +6,8 @@
 DOCKER_IMAGE_NAME=fbarmes/rpi-alpine
 DOCKER_IMAGE_VERSION=$(shell cat VERSION)
 
-ALPINE_VERSION=3.8
-QEMU_VERSION=3.0.0
+ALPINE_VERSION=3.13
+QEMU_VERSION=v5.2.0-2
 
 #------------------------------------------------------------------------------
 # script internals
@@ -17,13 +17,13 @@ QEMU_VERSION=3.0.0
 SCRIPT_DIR=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 #-- Url to Quemu
-QEMU_URL=https://github.com/multiarch/qemu-user-static/releases/download/v${QEMU_VERSION}/qemu-arm-static.tar.gz
+QEMU_URL=https://github.com/multiarch/qemu-user-static/releases/download/${QEMU_VERSION}/qemu-arm-static.tar.gz
 
 #-------------------------------------------------------------------------------
 # Default target (all)
 #-------------------------------------------------------------------------------
 .PHONY: all
-all: echo deps docker test
+all: echo deps docker-build
 
 #-------------------------------------------------------------------------------
 # clean target
@@ -60,7 +60,7 @@ bin/qemu-arm-static:
 #-------------------------------------------------------------------------------
 # Build docker image
 #-------------------------------------------------------------------------------
-docker:
+docker-build:
 	#-- register cpu emulation
 	docker run --rm --privileged multiarch/qemu-user-static:register --reset
 
@@ -80,3 +80,10 @@ docker:
 #-------------------------------------------------------------------------------
 test:
 	docker run --rm ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} uname -a
+
+#-------------------------------------------------------------------------------
+# push docker image
+#-------------------------------------------------------------------------------
+docker-push: docker-build
+		docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)
+		docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}

@@ -1,5 +1,8 @@
-sudo: required
 
+language: minimal
+
+
+sudo: required
 
 
 services:
