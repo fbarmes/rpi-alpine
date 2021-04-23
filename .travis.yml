@@ -1,7 +1,6 @@
 #-- Choose build environment
-virt: lxd               # LXD container
 os: linux
-dist: focal             # Use Ubuntu 20
+dist: xenial
 language: shell
 
 
@@ -20,21 +19,15 @@ install:
   # install any dependencies required
   skip
 
-#-- Define stage order and conditions
-stages:
-  - name: build
-  - name: deploy
-    if: branch = master
+#-- Build script
+script:
+  - make docker-build
 
-#-- define jobs and stages
-jobs:
-  include:
-    - stage: build
-      script: make docker-build
-
-    - stage: deploy
-      script:
-        - echo "Push to docker hub"
-        - make docker-build
-        - make docker-push
-        - make docker-push-latest
+#-- Deploy
+deploy:
+  provider: script
+  script:
+    - make docker-push
+    - make docker-push-latest
+  on:
+    branch: master
